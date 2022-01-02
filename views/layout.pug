@@ -1,0 +1,32 @@
+block variables
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    meta(name="theme-color", content="#000000")
+    title #{title}
+  body
+    div#root
+      block layout-content
+
+script(src="https://cdn.jsdelivr.net/npm/hls.js@latest")
+script.
+  var video = document.getElementById('video');
+  video.controls = true;
+  var videoSrc = '../data/m3u8/video1.m3u8';
+  if(Hls.isSupported()) {
+    var hls = new Hls();
+    hls.loadSource(videoSrc);
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED,function() {
+      console.log(Hls.Events.MANIFEST_PARSED)
+      video.play();
+  });
+ }
+  else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = video;
+    video.addEventListener('canplay',function() {
+      video.play();
+    });
+  }
